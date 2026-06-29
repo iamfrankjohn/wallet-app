@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'security_prefs.dart';
@@ -54,21 +55,40 @@ class _AppRootState extends State<AppRoot> with WidgetsBindingObserver {
   }
 
   Future<void> _checkPin() async {
-    final hasPin = await SecurityPrefs.hasPin();
-    if (!mounted) return;
-    setState(() {
-      _hasPin = hasPin;
-      _unlocked = !hasPin;
-    });
+    try {
+      final hasPin = await SecurityPrefs.hasPin()
+          .timeout(const Duration(seconds: 5), onTimeout: () => false);
+      if (!mounted) return;
+      setState(() {
+        _hasPin = hasPin;
+        _unlocked = !hasPin;
+      });
+    } catch (_) {
+      // If SharedPreferences fails or times out, just open the app unlocked
+      if (!mounted) return;
+      setState(() {
+        _hasPin = false;
+        _unlocked = true;
+      });
+    }
   }
 
   Future<void> _refreshSecurityState() async {
-    final hasPin = await SecurityPrefs.hasPin();
-    if (!mounted) return;
-    setState(() {
-      _hasPin = hasPin;
-      if (!hasPin) _unlocked = true;
-    });
+    try {
+      final hasPin = await SecurityPrefs.hasPin()
+          .timeout(const Duration(seconds: 5), onTimeout: () => false);
+      if (!mounted) return;
+      setState(() {
+        _hasPin = hasPin;
+        if (!hasPin) _unlocked = true;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _hasPin = false;
+        _unlocked = true;
+      });
+    }
   }
 
   void _onTabSelected(int i) {
@@ -136,7 +156,6 @@ class _AppRootState extends State<AppRoot> with WidgetsBindingObserver {
             tooltip: 'Settings',
             color: AppTheme.textSecondary,
           ),
-
         ],
       ),
       body: IndexedStack(
