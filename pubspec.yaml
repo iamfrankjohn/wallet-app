@@ -1,0 +1,29 @@
+name: wallet_app
+description: Salary & Wallet Tracker - Offline Flutter App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.3.3
+  sqflite_common_ffi: ^2.3.3
+  path: ^1.9.0
+  intl: ^0.19.0
+  cupertino_icons: ^1.0.6
+  shared_preferences: ^2.3.2
+  local_auth: ^2.3.0
+  crypto: ^3.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
