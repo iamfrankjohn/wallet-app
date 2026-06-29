@@ -210,7 +210,7 @@ class _RecurringScreenState extends State<RecurringScreen> {
 
   Widget _dayPicker(String label, int value, ValueChanged<int> onChanged) {
     return DropdownButtonFormField<int>(
-      initialValue: value,
+      value: value,
       decoration: InputDecoration(labelText: label),
       items: List.generate(31, (i) => DropdownMenuItem(
           value: i + 1, child: Text(ordinal(i + 1)))),
@@ -220,7 +220,7 @@ class _RecurringScreenState extends State<RecurringScreen> {
 
   Widget _dayPicker2() {
     return DropdownButtonFormField<int?>(
-      initialValue: _payDay2,
+      value: _payDay2,
       decoration: const InputDecoration(labelText: 'Pay Day 2 (opt.)'),
       items: [
         const DropdownMenuItem<int?>(value: null, child: Text('None')),
