@@ -25,8 +25,14 @@ jobs:
       - name: Build IPA (no codesign)
         run: flutter build ipa --release --no-codesign
 
+      - name: Find IPA file
+        run: find . -name "*.ipa" -o -name "*.xcarchive" | head -20
+
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: wallet-app-ipa
-          path: build/ios/ipa/*.ipa
+          name: wallet-tracker-ipa
+          path: |
+            build/ios/ipa/*.ipa
+            build/ios/archive/*.xcarchive
+          if-no-files-found: warn
